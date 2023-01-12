@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -18,9 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.markusw.app.domain.model.Todo
-import com.markusw.app.ui.theme.Green
-import com.markusw.app.ui.theme.Red
 import com.markusw.app.ui.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 fun TodoItem(
     todo: Todo,
     viewModel: MainViewModel,
+    navController: NavController
 ) {
 
     val coroutineScope = rememberCoroutineScope()
@@ -37,6 +38,9 @@ fun TodoItem(
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(color = MaterialTheme.colorScheme.surfaceVariant)
+            .clickable {
+
+            }
             .padding(10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -50,11 +54,13 @@ fun TodoItem(
         ) {
 
             var isDone by remember { mutableStateOf(todo.isDone) }
+            val defaultTintColor = LocalContentColor.current
 
             TodoIcon(
                 icon = Icons.Default.Check,
                 contentDescription = null,
-                backgroundColor = if (isDone) Green else MaterialTheme.colorScheme.surfaceVariant,
+                backgroundColor = if (isDone) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+                tintColor = if (isDone) MaterialTheme.colorScheme.background else defaultTintColor,
             ) {
                 viewModel.onTodoDone(todo)
                 isDone = !isDone
@@ -62,7 +68,8 @@ fun TodoItem(
             TodoIcon(
                 icon = Icons.Default.Delete,
                 contentDescription = null,
-                backgroundColor = Red,
+                backgroundColor = MaterialTheme.colorScheme.errorContainer,
+                tintColor = defaultTintColor
             ) {
                 coroutineScope.launch {
                     viewModel.onTodoDeleted(todo)
@@ -78,6 +85,7 @@ fun TodoIcon(
     contentDescription: String?,
     cornerRadius: Dp = 8.dp,
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    tintColor: Color,
     onClick: () -> Unit
 ) {
     Box(
@@ -90,7 +98,8 @@ fun TodoIcon(
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = contentDescription
+            contentDescription = contentDescription,
+            tint = tintColor
         )
     }
 }

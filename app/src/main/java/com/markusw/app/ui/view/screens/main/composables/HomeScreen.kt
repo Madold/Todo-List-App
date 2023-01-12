@@ -11,13 +11,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.markusw.app.ui.viewmodel.MainViewModel
 
 @Composable
 fun HomeScreen(
     paddingValues: PaddingValues,
     snackbarHostState: SnackbarHostState,
-    viewModel: MainViewModel = hiltViewModel()
+    navController: NavController,
+    viewModel: MainViewModel = hiltViewModel(),
 ) {
     Surface(
         modifier = Modifier
@@ -51,6 +53,7 @@ fun HomeScreen(
                         TodoItem(
                             todo = todo,
                             viewModel = viewModel,
+                            navController = navController
                         )
                     }
                 }

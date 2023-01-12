@@ -34,7 +34,11 @@ fun BottomNavigationHost(
                 towards = AnimatedContentScope.SlideDirection.Right
             )
         }) {
-            HomeScreen(paddingValues, snackbarHostState)
+            HomeScreen(
+                paddingValues = paddingValues,
+                snackbarHostState = snackbarHostState,
+                navController = navHostController
+            )
         }
         composable(route = BottomBarScreen.WriteTodoScreen.route) {
             WriteTodoScreen(paddingValues, snackbarHostState)
