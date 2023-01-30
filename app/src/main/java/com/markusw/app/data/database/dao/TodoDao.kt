@@ -9,7 +9,6 @@ import com.markusw.app.data.database.entities.TodoEntity
 
 @Dao
 interface TodoDao {
-
     @Query("SELECT * FROM $TODOS_TABLE")
     suspend fun getTodoList(): List<TodoEntity>
 
