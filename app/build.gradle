@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.markusw.app"
-        minSdk 21
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -56,6 +56,7 @@ dependencies {
     def system_ui_controller_version = '0.28.0'
     def room_version = '2.5.0'
     def navigation_compose_animation_version = '0.28.0'
+    def lottie_compose_version = "5.2.0"
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
@@ -83,6 +84,8 @@ dependencies {
     implementation "com.google.accompanist:accompanist-navigation-animation:$navigation_compose_animation_version"
     //Splash screen api
     implementation "androidx.core:core-splashscreen:1.0.0"
+    //Lottie compose
+    implementation "com.airbnb.android:lottie-compose:$lottie_compose_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

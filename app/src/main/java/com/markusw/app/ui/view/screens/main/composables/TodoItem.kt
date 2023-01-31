@@ -1,3 +1,5 @@
+
+
 package com.markusw.app.ui.view.screens.main.composables
 
 import androidx.compose.foundation.background
@@ -28,13 +30,14 @@ import kotlinx.coroutines.launch
 fun TodoItem(
     todo: Todo,
     viewModel: MainViewModel,
+    modifier: Modifier = Modifier,
     navController: NavController
 ) {
 
     val coroutineScope = rememberCoroutineScope()
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(color = MaterialTheme.colorScheme.surfaceVariant)

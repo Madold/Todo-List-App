@@ -1,9 +1,8 @@
 
+
 package com.markusw.app.ui.view.screens.main.composables
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
@@ -13,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.airbnb.lottie.compose.*
+import com.markusw.app.R
 import com.markusw.app.ui.viewmodel.MainViewModel
 
 @Composable
@@ -47,6 +48,7 @@ fun HomeScreen(
             Box(
                 modifier = Modifier.fillMaxWidth()
             ) {
+                /*
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
@@ -54,15 +56,35 @@ fun HomeScreen(
                         TodoItem(
                             todo = todo,
                             viewModel = viewModel,
-                            navController = navController
+                            navController = navController,
                         )
                     }
-                }
+                }*/
+
+                EmptyListAnimation()
             }
         }
     }
 }
 
+@Composable
+fun EmptyListAnimation() {
+    val compositionResult = rememberLottieComposition(
+        spec = LottieCompositionSpec.RawRes(R.raw.not_found_anim)
+    )
+    val progressAnimation by animateLottieCompositionAsState(
+        composition = compositionResult.value,
+        isPlaying = true,
+        iterations = LottieConstants.IterateForever,
+        speed = 1f
+    )
+
+    LottieAnimation(
+        composition = compositionResult.value,
+        progress =  { progressAnimation },
+        modifier = Modifier.fillMaxWidth()
+    )
+}
 
 
 
