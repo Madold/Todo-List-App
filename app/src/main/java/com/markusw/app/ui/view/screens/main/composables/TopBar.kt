@@ -2,21 +2,25 @@
 
 package com.markusw.app.ui.view.screens.main.composables
 
-import android.os.Build
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
+import androidx.compose.ui.tooling.preview.Preview
 import java.time.LocalTime
 import java.util.*
 
 @Composable
-fun TopBar() {
+fun TopBar(
+    onNavigationIconClick: () -> Unit
+) {
 
     val greetingText by getGreeting()
 
-    TopAppBar(
+    MediumTopAppBar(
         title = {
             Text(
                 text = greetingText,
@@ -24,29 +28,39 @@ fun TopBar() {
             )
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+            containerColor = MaterialTheme.colorScheme.background,
+            titleContentColor = MaterialTheme.colorScheme.onBackground,
+        ),
+        navigationIcon = {
+            IconButton(onClick = onNavigationIconClick) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = "Menu"
+                )
+            }
+        }
     )
 }
 
 @Composable
 fun getGreeting(): State<String> {
     return produceState(initialValue = "") {
-        value = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            when (LocalTime.now().hour) {
+        value = when (LocalTime.now().hour) {
                 in (0 until 12) -> {
-                    "Buenos días"
+                    "Good morning"
                 }
                 in (12 until 18) -> {
-                    "Buenas tardes"
+                    "Good afternoon"
                 }
                 else -> {
-                    "Buenas noches"
+                    "Good evening"
                 }
             }
-        } else {
-            "Bienvenido"
-        }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TopBarPreview() {
+    TopBar(onNavigationIconClick = {})
 }
