@@ -34,6 +34,11 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun deleteTodo(todo: Todo) {
+        viewModelScope.launch {
+            repository.deleteTodo(todo)
+        }
+    }
 
 
 

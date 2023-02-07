@@ -29,6 +29,7 @@ fun Content(
     val todoTitle by viewModel.taskTitle.collectAsState()
     val todoDescription by viewModel.taskDescription.collectAsState()
     val isReminderChecked by viewModel.isReminderChecked.collectAsState()
+    val notificationDeniedDialog by viewModel.notificationDeniedDialog.collectAsState()
     val calendarState = rememberSheetState()
     val clockState = rememberSheetState()
 
@@ -88,5 +89,12 @@ fun Content(
                 clockState = clockState
             )
         }
+
+        if (notificationDeniedDialog) {
+            NotificationDeniedDialog(
+                onConfirm = viewModel::onNotificationDeniedDialogDismissed,
+            )
+        }
+
     }
 }

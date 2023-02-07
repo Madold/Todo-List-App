@@ -60,6 +60,8 @@ dependencies {
     def sheet_compose_dialogs_version = "1.0.4"
     def material_icons_extended_version = "1.3.1"
     def swipe_to_dismiss_version = "1.0.0"
+    def accompanist_permissions_version = "0.29.1-alpha"
+    def work_manager_version = "2.7.1"
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
@@ -99,6 +101,11 @@ dependencies {
     implementation "androidx.compose.material:material-icons-extended:$material_icons_extended_version"
     //Swipe to dismiss
     implementation "me.saket.swipe:swipe:$swipe_to_dismiss_version"
+    //Accompanist permissions
+    implementation "com.google.accompanist:accompanist-permissions:$accompanist_permissions_version"
+    //Work manager
+    implementation "androidx.work:work-runtime-ktx:$work_manager_version"
+
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

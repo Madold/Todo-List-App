@@ -3,6 +3,8 @@
 package com.markusw.app.ui.view.screens.todoinfo.composables
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -14,14 +16,14 @@ fun TodoInfoTopBar(
 ) {
     TopAppBar(
         title = {
-            Text(text = "Informacion de la tarea")
+            Text(text = "Task information")
         },
         navigationIcon = {
             IconButton(
                 onClick = {  navController.popBackStack() }
             ) {
                 Icon(
-                    imageVector = Icons.Default.KeyboardArrowLeft,
+                    imageVector = Icons.Default.ArrowBack,
                     contentDescription = null
                 )
             }

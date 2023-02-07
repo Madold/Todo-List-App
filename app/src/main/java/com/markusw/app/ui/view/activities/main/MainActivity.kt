@@ -1,40 +1,57 @@
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 
 package com.markusw.app.ui.view.activities.main
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
+import androidx.compose.animation.*
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.markusw.app.domain.model.UserSettings
 import com.markusw.app.ui.theme.AppTheme
-import com.markusw.app.ui.view.screens.Screens
-import com.markusw.app.ui.view.screens.main.MainScreen
-import com.markusw.app.ui.view.screens.todoinfo.TodoInfoScreen
-import com.markusw.app.ui.view.screens.writtetodo.WriteTodoScreen
+import com.markusw.app.ui.view.NavHost
+import com.markusw.app.ui.view.screens.main.composables.NavigationDrawer
+import com.markusw.app.ui.viewmodel.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppTheme {
+
+            val settingsViewModel: SettingsViewModel = hiltViewModel()
+            val userSettings by settingsViewModel.settings.collectAsState(initial = UserSettings())
+            val isDarkModeEnabled by remember {
+                derivedStateOf {
+                    userSettings?.isDarkModeEnabled ?: false
+                }
+            }
+            val isDynamicColorsEnabled by remember {
+                derivedStateOf {
+                    userSettings?.isDynamicColorsEnabled ?: false
+                }
+            }
+
+            AppTheme(
+                useDarkTheme = isDarkModeEnabled,
+                dynamicColor = isDynamicColorsEnabled
+            ) {
 
                 val systemUiController = rememberSystemUiController()
                 val isSystemInDarkTheme = isSystemInDarkTheme()
                 val systemBarsColors = MaterialTheme.colorScheme.background
-                val navController = rememberNavController()
+                val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+                val navController = rememberAnimatedNavController()
 
                 SideEffect {
                     systemUiController.setSystemBarsColor(
@@ -43,40 +60,16 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    NavHost(
-                        navController = navController,
-                        startDestination = Screens.MainScreen.route
-                    ) {
-                        composable(
-                            route = Screens.MainScreen.route,
-                        ) {
-                            MainScreen(navController)
-                        }
-                        composable(
-                            route = Screens.WriteTodoScreen.route,
-                        ) {
-                            WriteTodoScreen(navController)
-                        }
-                        composable(
-                            route = "${Screens.TodoInfoScreen.route}/{id}",
-                            arguments = listOf(
-                                navArgument(name = "id") {
-                                    type = NavType.IntType
-                                }
-                            )
-                        ) { navBackStackEntry ->
-                            val todoId = navBackStackEntry.arguments?.getInt("id")
-                            TodoInfoScreen(
-                                navController = navController,
-                                todoId = todoId!!
-                            )
-                        }
-                    }
-                }
+                NavigationDrawer(
+                    drawerState = drawerState,
+                    content = {
+                        NavHost(
+                            drawerState = drawerState,
+                            navController = navController
+                        )
+                    },
+                    navController = navController
+                )
             }
         }
     }

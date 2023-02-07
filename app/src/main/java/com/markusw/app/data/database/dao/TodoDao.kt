@@ -19,6 +19,9 @@ interface TodoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveTodo(todo: TodoEntity)
 
+    @Query("SELECT * FROM $TODOS_TABLE WHERE id = :id")
+    fun getTodoById(id: Int): Flow<TodoEntity>
+
     @Query("DELETE FROM $TODOS_TABLE WHERE id = :id")
     suspend fun deleteTodoById(id: Int)
 }

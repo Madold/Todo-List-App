@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.markusw.app.domain.model.Todo
+import com.markusw.app.ui.view.screens.Screens
 import com.markusw.app.ui.viewmodel.MainViewModel
 
 @Composable
@@ -29,21 +30,21 @@ fun TaskItem(
     navController: NavController,
     viewModel: MainViewModel = hiltViewModel()
 ) {
+
+    var isChecked by rememberSaveable { mutableStateOf(task.isDone) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .clickable {
-                //TODO: Navigate to task details screen
+                navController.navigate("${Screens.TodoInfoScreen.route}/${task.id}")
             }
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-
-        var isChecked by rememberSaveable { mutableStateOf(task.isDone) }
-
         TaskCheck(isChecked = isChecked) {
             isChecked = !isChecked
             viewModel.onTodoDone(task)
@@ -53,6 +54,7 @@ fun TaskItem(
             style = TextStyle(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 16.sp,
+                textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None
             )
         )
     }
