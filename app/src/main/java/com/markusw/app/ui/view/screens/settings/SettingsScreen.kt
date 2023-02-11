@@ -21,7 +21,7 @@ fun SettingsScreen(
                 }
             )
         },
-    ) {padding ->
+    ) { padding ->
         Content(paddingValues = padding)
     }
 }

@@ -7,9 +7,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.animation.*
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.*
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -23,7 +25,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +49,6 @@ class MainActivity : ComponentActivity() {
             ) {
 
                 val systemUiController = rememberSystemUiController()
-                val isSystemInDarkTheme = isSystemInDarkTheme()
                 val systemBarsColors = MaterialTheme.colorScheme.background
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 val navController = rememberAnimatedNavController()
@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
                 SideEffect {
                     systemUiController.setSystemBarsColor(
                         color = systemBarsColors,
-                        darkIcons = !isSystemInDarkTheme
+                        darkIcons = !isDarkModeEnabled
                     )
                 }
 

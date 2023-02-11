@@ -20,6 +20,9 @@ fun SettingScreenTopBar(
             IconButton(onClick = onNavigationIconClick) {
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
             }
-        }
+        },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background
+        )
     )
 }
