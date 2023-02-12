@@ -24,9 +24,7 @@ fun DateFields(
     viewModel: WriteTodoViewModel = hiltViewModel(),
 ) {
 
-    val todoEndDate by viewModel.taskEndDate.collectAsState()
-    val todoEndMinutes by viewModel.taskEndMinutes.collectAsState()
-    val todoEndHour by viewModel.taskEndHour.collectAsState()
+    val inputsState by viewModel.inputsState.collectAsState()
 
     Column {
         Spacer(modifier = Modifier.height(8.dp))
@@ -35,7 +33,7 @@ fun DateFields(
         )
         Spacer(modifier = Modifier.height(8.dp))
         TaskDateField(
-            value = if (todoEndDate != null) viewModel.getFormattedDate() else "",
+            value = if (inputsState.endDate != null) viewModel.getFormattedDate() else "",
             onClick = {
                 calendarState.show()
             },
@@ -55,7 +53,7 @@ fun DateFields(
         )
         Spacer(modifier = Modifier.height(8.dp))
         TaskHourField(
-            value = if (todoEndHour != null && todoEndMinutes != null) viewModel.getFormattedTime() else "",
+            value = if (inputsState.endHour != null && inputsState.endMinute != null) viewModel.getFormattedTime() else "",
             onClick = {
                 clockState.show()
             },

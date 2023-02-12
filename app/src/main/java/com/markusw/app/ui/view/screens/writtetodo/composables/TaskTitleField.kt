@@ -1,16 +1,33 @@
 package com.markusw.app.ui.view.screens.writtetodo.composables
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun TaskTitleField(
     value: String,
     placeholderText: String = "",
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    isError: Boolean = false,
+    errorMessage: String?
 ) {
-    InputField(
-        value = value,
-        onValueChange = onValueChange,
-        placeholderText = placeholderText
-    )
+    Column {
+        Text(text = "Title")
+        Spacer(modifier = Modifier.height(8.dp))
+        InputField(
+            value = value,
+            onValueChange = onValueChange,
+            placeholderText = placeholderText,
+            isError = isError
+        )
+        if(isError) {
+            Spacer(modifier = Modifier.height(8.dp))
+            ErrorText(errorMessage = errorMessage)
+        }
+    }
 }

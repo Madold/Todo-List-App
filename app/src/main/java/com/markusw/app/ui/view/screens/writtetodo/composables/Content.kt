@@ -5,8 +5,6 @@ package com.markusw.app.ui.view.screens.writtetodo.composables
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,9 +24,7 @@ fun Content(
     paddingValues: PaddingValues,
     viewModel: WriteTodoViewModel = hiltViewModel()
 ) {
-    val todoTitle by viewModel.taskTitle.collectAsState()
-    val todoDescription by viewModel.taskDescription.collectAsState()
-    val isReminderChecked by viewModel.isReminderChecked.collectAsState()
+    val inputsState by viewModel.inputsState.collectAsState()
     val notificationDeniedDialog by viewModel.notificationDeniedDialog.collectAsState()
     val calendarState = rememberSheetState()
     val clockState = rememberSheetState()
@@ -53,37 +49,28 @@ fun Content(
         modifier = Modifier
             .padding(paddingValues)
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = "Title"
-        )
-        Spacer(modifier = Modifier.height(8.dp))
         TaskTitleField(
-            value = todoTitle,
+            value = inputsState.taskTitle,
             onValueChange = viewModel::onTaskTitleChanged,
-            placeholderText = "Ex: Study in the morning"
+            placeholderText = "Ex: Study in the morning",
+            isError = inputsState.taskDescriptionError != null,
+            errorMessage = inputsState.taskTitleError
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Description"
-        )
-        Spacer(modifier = Modifier.height(8.dp))
         TaskDescriptionField(
-            value = todoDescription,
+            value = inputsState.taskDescription,
             onValueChange = viewModel::onTaskDescriptionChanged,
-            placeholderText = "Ex: Study for 2 hours using the book"
+            placeholderText = "Ex: Study for 2 hours using the book",
+            isError = inputsState.taskDescriptionError != null,
+            errorMessage = inputsState.taskDescriptionError
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Remember"
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Switch(
-            checked = isReminderChecked,
+        ScheduleTaskSwitch(
+            checked = inputsState.isScheduled,
             onCheckedChange = viewModel::onReminderChecked
         )
-        AnimatedVisibility(visible = isReminderChecked) {
+        AnimatedVisibility(visible = inputsState.isScheduled) {
             DateFields(
                 calendarState = calendarState,
                 clockState = clockState

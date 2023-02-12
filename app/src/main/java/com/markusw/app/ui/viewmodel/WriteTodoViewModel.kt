@@ -1,20 +1,19 @@
 package com.markusw.app.ui.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.Data
 import com.markusw.app.core.Constants
 import com.markusw.app.core.utils.DelayComputer
 import com.markusw.app.domain.model.Todo
-import com.markusw.app.domain.usecases.FormatDate
-import com.markusw.app.domain.usecases.FormatTime
-import com.markusw.app.domain.usecases.SaveTask
-import com.markusw.app.domain.usecases.ScheduleNotification
+import com.markusw.app.domain.usecases.*
+import com.markusw.app.ui.view.screens.writtetodo.InputsState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -25,63 +24,88 @@ class WriteTodoViewModel @Inject constructor(
     private val formatTime: FormatTime,
     private val scheduleNotification: ScheduleNotification,
     private val saveTask: SaveTask,
+    private val validateTaskTitle: ValidateTaskTitle,
+    private val validateTaskDescription: ValidateTaskDescription,
+    private val validateTaskDate: ValidateTaskDate,
+    private val validateTaskTime: ValidateTaskTimes
 ) : ViewModel() {
 
-    companion object {
-        const val TAG = "WriteTodoViewModel"
-    }
-
-    private var _taskTitle = MutableStateFlow("")
-    val taskTitle = _taskTitle.asStateFlow()
-    private var _taskDescription = MutableStateFlow("")
-    val taskDescription = _taskDescription.asStateFlow()
-    private var _taskEndDate: MutableStateFlow<LocalDate?> = MutableStateFlow(null)
-    val taskEndDate = _taskEndDate.asStateFlow()
-    private var _taskEndHour = MutableStateFlow<Int?>(null)
-    val taskEndHour = _taskEndHour.asStateFlow()
-    private var _taskEndMinutes = MutableStateFlow<Int?>(null)
-    val taskEndMinutes = _taskEndMinutes.asStateFlow()
-    private var _isReminderChecked = MutableStateFlow(false)
-    val isReminderChecked = _isReminderChecked.asStateFlow()
+    private var _inputsState = MutableStateFlow(InputsState())
+    val inputsState = _inputsState.asStateFlow()
     private var _notificationDeniedDialog = MutableStateFlow(false)
     val notificationDeniedDialog = _notificationDeniedDialog.asStateFlow()
+    private val validationEventChannel = Channel<ValidationEvent>()
+    val validationEvent = validationEventChannel.receiveAsFlow()
 
     fun onTaskTitleChanged(title: String) {
-        _taskTitle.value = title
+        _inputsState.value = _inputsState.value.copy(taskTitle = title)
     }
 
     fun onTaskDescriptionChanged(description: String) {
-        _taskDescription.value = description
+        _inputsState.value = _inputsState.value.copy(taskDescription = description)
     }
 
     fun onTaskEndDateChanged(date: LocalDate) {
-        _taskEndDate.value = date
+        _inputsState.value = _inputsState.value.copy(endDate = date)
     }
 
     fun getFormattedDate(): String {
-        return formatDate(taskEndDate.value!!)
+        return formatDate(_inputsState.value.endDate!!)
     }
 
     fun onTaskEndTimeChanged(hours: Int, minutes: Int) {
-        _taskEndHour.value = hours
-        _taskEndMinutes.value = minutes
+        _inputsState.value = _inputsState.value.copy(
+            endHour = hours,
+            endMinute = minutes
+        )
     }
 
     fun getFormattedTime(): String {
         return formatTime(
-            hours = taskEndHour.value!!,
-            minutes = taskEndMinutes.value!!
+            hours = _inputsState.value.endHour!!,
+            minutes = _inputsState.value.endMinute!!
         )
     }
 
     fun saveTask() {
         viewModelScope.launch {
+            
+            val titleResult = validateTaskTitle(_inputsState.value.taskTitle)
+            val descriptionResult = validateTaskDescription(_inputsState.value.taskDescription)
+            val dateResult = validateTaskDate(
+                scheduled = _inputsState.value.isScheduled,
+                date = _inputsState.value.endDate
+            )
+            val timeResult = validateTaskTime(
+                scheduled = _inputsState.value.isScheduled,
+                hour = _inputsState.value.endHour,
+                minutes = _inputsState.value.endMinute
+            )
+            val isAnyError = listOf(
+                titleResult,
+                descriptionResult,
+                dateResult,
+                timeResult
+            ).any { !it.successful }
+
+
+            if(isAnyError) {
+                _inputsState.value = _inputsState.value.copy(
+                    taskTitleError = titleResult.errorMessage,
+                    taskDescriptionError = descriptionResult.errorMessage,
+                    endDateError = dateResult.errorMessage,
+                    timeInputError = timeResult.errorMessage
+                )
+                return@launch
+            }
+
+            validationEventChannel.send(ValidationEvent.Success)
             saveTask(
                 Todo(
-                    title = taskTitle.value,
-                    description = taskDescription.value,
-                    endDate = taskEndDate.value?.let { getFormattedDate() } ?: "",
-                    endHour = taskEndHour.value?.let { getFormattedTime() } ?: ""
+                    title = _inputsState.value.taskTitle,
+                    description = _inputsState.value.taskDescription,
+                    endDate = _inputsState.value.endDate?.let { getFormattedDate() } ?: "",
+                    endHour = _inputsState.value.endHour?.let { getFormattedTime() } ?: ""
                 )
             )
             clearInputs()
@@ -89,15 +113,11 @@ class WriteTodoViewModel @Inject constructor(
     }
 
     private fun clearInputs() {
-        _taskTitle.value = ""
-        _taskDescription.value = ""
-        _taskEndDate.value = null
-        _taskEndHour.value = null
-        _taskEndMinutes.value = null
+        _inputsState.value = InputsState()
     }
 
     fun onReminderChecked(isChecked: Boolean) {
-        _isReminderChecked.value = isChecked
+        _inputsState.value = _inputsState.value.copy(isScheduled = isChecked)
     }
 
     fun onNotificationPermissionDenied() {
@@ -112,7 +132,6 @@ class WriteTodoViewModel @Inject constructor(
         viewModelScope.launch {
             val data = buildData()
             val delay = computeDelay()
-            Log.d(TAG, "Delay: $delay")
             scheduleNotification(context, delay, data)
         }
     }
@@ -123,7 +142,7 @@ class WriteTodoViewModel @Inject constructor(
                 putString(Constants.TODO_TITLE, "Reminder")
                 putString(
                     Constants.TODO_DESCRIPTION,
-                    "Hi, this is a reminder for your task: ${_taskTitle.value}!"
+                    "Hi, this is a reminder for your task: ${_inputsState.value.taskTitle}!"
                 )
             }
             .build()
@@ -131,11 +150,15 @@ class WriteTodoViewModel @Inject constructor(
 
     private fun computeDelay(): Long {
         return DelayComputer.computeDelay(
-            endDate = _taskEndDate.value!!,
-            endHour = _taskEndHour.value!!,
-            endMinutes = _taskEndMinutes.value!!
+            endDate = _inputsState.value.endDate!!,
+            endHour = _inputsState.value.endHour!!,
+            endMinutes = _inputsState.value.endMinute!!
         )
     }
 
+}
+
+sealed class ValidationEvent {
+    object Success: ValidationEvent()
 }
 

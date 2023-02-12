@@ -22,6 +22,7 @@ fun InputField(
     readOnly: Boolean = false,
     placeholderText: String = "",
     onValueChange: (String) -> Unit,
+    isError: Boolean = false
 ) {
     OutlinedTextField(
         value = value,
@@ -39,6 +40,7 @@ fun InputField(
         singleLine = singleLine,
         maxLines = maxLines,
         trailingIcon = trailingIcon,
-        readOnly = readOnly
+        readOnly = readOnly,
+        isError = isError
     )
 }

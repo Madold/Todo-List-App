@@ -17,10 +17,9 @@ import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import com.markusw.app.ui.view.screens.writtetodo.composables.*
+import com.markusw.app.ui.viewmodel.ValidationEvent
 import com.markusw.app.ui.viewmodel.WriteTodoViewModel
-import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
@@ -30,15 +29,33 @@ fun WriteTodoScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
-    val isReminderChecked by viewModel.isReminderChecked.collectAsState()
+    val inputsState by viewModel.inputsState.collectAsState()
+    val isReminderChecked by remember {
+        derivedStateOf { inputsState.isScheduled }
+    }
     val permissionState = rememberPermissionState(
         permission = POST_NOTIFICATIONS
     )
     val context = LocalContext.current
 
-    if (permissionState.status.shouldShowRationale) {
-        viewModel.onNotificationPermissionDenied()
+    LaunchedEffect(key1 = permissionState.status.isGranted) {
+        if (permissionState.status.isGranted) {
+            viewModel.onNotificationPermissionDenied()
+        }
+    }
+    LaunchedEffect(key1 = context) {
+        viewModel.validationEvent.collect { event ->
+            when (event) {
+                is ValidationEvent.Success -> {
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    snackbarHostState.showSnackbar(
+                        message = "Task created",
+                        actionLabel = "Ok",
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
     }
 
     Scaffold(
@@ -60,7 +77,6 @@ fun WriteTodoScreen(
         bottomBar = {
             BottomButton(
                 onClick = {
-
                     val isAndroidVersionMayorOrEqualsToTiramisu = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
                     if (!isAndroidVersionMayorOrEqualsToTiramisu) {
@@ -68,29 +84,12 @@ fun WriteTodoScreen(
                             viewModel.scheduleTaskNotification(context)
                         }
                         viewModel.saveTask()
-                        coroutineScope.launch {
-                            snackbarHostState.currentSnackbarData?.dismiss()
-                            snackbarHostState.showSnackbar(
-                                message = "Task created",
-                                actionLabel = "Ok",
-                                duration = SnackbarDuration.Short
-                            )
-                        }
-
                         focusManager.clearFocus()
                         return@BottomButton
                     }
 
                     if (!isReminderChecked) {
                         viewModel.saveTask()
-                        coroutineScope.launch {
-                            snackbarHostState.currentSnackbarData?.dismiss()
-                            snackbarHostState.showSnackbar(
-                                message = "Task created",
-                                actionLabel = "Ok",
-                                duration = SnackbarDuration.Short
-                            )
-                        }
                         focusManager.clearFocus()
                         return@BottomButton
                     }
@@ -109,14 +108,6 @@ fun WriteTodoScreen(
 
                     viewModel.saveTask()
                     viewModel.scheduleTaskNotification(context)
-                    coroutineScope.launch {
-                        snackbarHostState.currentSnackbarData?.dismiss()
-                        snackbarHostState.showSnackbar(
-                            message = "Task created",
-                            actionLabel = "Ok",
-                            duration = SnackbarDuration.Short
-                        )
-                    }
                     focusManager.clearFocus()
                 }
             )
