@@ -17,8 +17,9 @@ import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
+import com.markusw.app.domain.ValidationEvent
 import com.markusw.app.ui.view.screens.writtetodo.composables.*
-import com.markusw.app.ui.viewmodel.ValidationEvent
 import com.markusw.app.ui.viewmodel.WriteTodoViewModel
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -30,23 +31,19 @@ fun WriteTodoScreen(
     val focusManager = LocalFocusManager.current
     val snackbarHostState = remember { SnackbarHostState() }
     val inputsState by viewModel.inputsState.collectAsState()
-    val isReminderChecked by remember {
-        derivedStateOf { inputsState.isScheduled }
-    }
-    val permissionState = rememberPermissionState(
-        permission = POST_NOTIFICATIONS
-    )
+    val isReminderChecked by remember { derivedStateOf { inputsState.isScheduled } }
+    val permissionState = rememberPermissionState(permission = POST_NOTIFICATIONS)
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = permissionState.status.isGranted) {
-        if (permissionState.status.isGranted) {
-            viewModel.onNotificationPermissionDenied()
-        }
+    if (permissionState.status.shouldShowRationale) {
+        viewModel.onNotificationPermissionDenied()
     }
+
     LaunchedEffect(key1 = context) {
         viewModel.validationEvent.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
+                    viewModel.clearInputs()
                     snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(
                         message = "Task created",
@@ -77,26 +74,27 @@ fun WriteTodoScreen(
         bottomBar = {
             BottomButton(
                 onClick = {
-                    val isAndroidVersionMayorOrEqualsToTiramisu = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                    val isAndroidVersionMayorOrEqualsToTiramisu =
+                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
+                    // For android versions below Tiramisu
                     if (!isAndroidVersionMayorOrEqualsToTiramisu) {
-                        if (isReminderChecked) {
-                            viewModel.scheduleTaskNotification(context)
-                        }
-                        viewModel.saveTask()
+                        viewModel.saveTask(context)
                         focusManager.clearFocus()
                         return@BottomButton
                     }
 
+                    // For android versions Tiramisu or above
                     if (!isReminderChecked) {
-                        viewModel.saveTask()
+                        viewModel.saveTask(context)
                         focusManager.clearFocus()
                         return@BottomButton
                     }
 
+                    // For android versions Tiramisu or above and reminder checked
                     permissionState.launchPermissionRequest()
 
-                    if (!permissionState.status.isGranted) {
+                    if (!permissionState.status.isGranted && !permissionState.status.shouldShowRationale) {
                         Toast.makeText(
                             context,
                             "Notification permission denied, enable it in settings",
@@ -106,8 +104,7 @@ fun WriteTodoScreen(
                         return@BottomButton
                     }
 
-                    viewModel.saveTask()
-                    viewModel.scheduleTaskNotification(context)
+                    viewModel.saveTask(context)
                     focusManager.clearFocus()
                 }
             )

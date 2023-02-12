@@ -56,7 +56,7 @@ fun Content(
             value = inputsState.taskTitle,
             onValueChange = viewModel::onTaskTitleChanged,
             placeholderText = "Ex: Study in the morning",
-            isError = inputsState.taskDescriptionError != null,
+            isError = inputsState.taskTitleError != null,
             errorMessage = inputsState.taskTitleError
         )
         TaskDescriptionField(

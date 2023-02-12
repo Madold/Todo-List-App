@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.Data
 import com.markusw.app.core.Constants
 import com.markusw.app.core.utils.DelayComputer
+import com.markusw.app.domain.ValidationEvent
 import com.markusw.app.domain.model.Todo
 import com.markusw.app.domain.usecases.*
 import com.markusw.app.ui.view.screens.writtetodo.InputsState
@@ -67,38 +68,39 @@ class WriteTodoViewModel @Inject constructor(
         )
     }
 
-    fun saveTask() {
+    fun saveTask(
+        context: Context
+    ) {
+        val titleResult = validateTaskTitle(_inputsState.value.taskTitle)
+        val descriptionResult = validateTaskDescription(_inputsState.value.taskDescription)
+        val dateResult = validateTaskDate(
+            scheduled = _inputsState.value.isScheduled,
+            date = _inputsState.value.endDate
+        )
+        val timeResult = validateTaskTime(
+            scheduled = _inputsState.value.isScheduled,
+            hour = _inputsState.value.endHour,
+            minutes = _inputsState.value.endMinute
+        )
+        val isAnyError = listOf(
+            titleResult,
+            descriptionResult,
+            dateResult,
+            timeResult
+        ).any { !it.successful }
+
+
+        if(isAnyError) {
+            _inputsState.value = _inputsState.value.copy(
+                taskTitleError = titleResult.errorMessage,
+                taskDescriptionError = descriptionResult.errorMessage,
+                endDateError = dateResult.errorMessage,
+                timeInputError = timeResult.errorMessage
+            )
+            return
+        }
+
         viewModelScope.launch {
-            
-            val titleResult = validateTaskTitle(_inputsState.value.taskTitle)
-            val descriptionResult = validateTaskDescription(_inputsState.value.taskDescription)
-            val dateResult = validateTaskDate(
-                scheduled = _inputsState.value.isScheduled,
-                date = _inputsState.value.endDate
-            )
-            val timeResult = validateTaskTime(
-                scheduled = _inputsState.value.isScheduled,
-                hour = _inputsState.value.endHour,
-                minutes = _inputsState.value.endMinute
-            )
-            val isAnyError = listOf(
-                titleResult,
-                descriptionResult,
-                dateResult,
-                timeResult
-            ).any { !it.successful }
-
-
-            if(isAnyError) {
-                _inputsState.value = _inputsState.value.copy(
-                    taskTitleError = titleResult.errorMessage,
-                    taskDescriptionError = descriptionResult.errorMessage,
-                    endDateError = dateResult.errorMessage,
-                    timeInputError = timeResult.errorMessage
-                )
-                return@launch
-            }
-
             validationEventChannel.send(ValidationEvent.Success)
             saveTask(
                 Todo(
@@ -108,11 +110,14 @@ class WriteTodoViewModel @Inject constructor(
                     endHour = _inputsState.value.endHour?.let { getFormattedTime() } ?: ""
                 )
             )
-            clearInputs()
+
+            if(_inputsState.value.isScheduled) {
+                scheduleTaskNotification(context = context)
+            }
         }
     }
 
-    private fun clearInputs() {
+    fun clearInputs() {
         _inputsState.value = InputsState()
     }
 
@@ -128,7 +133,7 @@ class WriteTodoViewModel @Inject constructor(
         _notificationDeniedDialog.value = false
     }
 
-    fun scheduleTaskNotification(context: Context) {
+    private fun scheduleTaskNotification(context: Context) {
         viewModelScope.launch {
             val data = buildData()
             val delay = computeDelay()
@@ -158,7 +163,4 @@ class WriteTodoViewModel @Inject constructor(
 
 }
 
-sealed class ValidationEvent {
-    object Success: ValidationEvent()
-}
 

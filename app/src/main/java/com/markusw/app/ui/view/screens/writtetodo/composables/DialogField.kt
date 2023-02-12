@@ -1,6 +1,7 @@
 package com.markusw.app.ui.view.screens.writtetodo.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +18,7 @@ fun DialogField(
     value: String,
     placeholder: @Composable () -> Unit = {},
     trailingIcon: @Composable () -> Unit = {},
+    isError: Boolean = false,
     onClick: () -> Unit
 ) {
     Box(
@@ -24,6 +26,11 @@ fun DialogField(
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
+            .border(
+                width = 1.dp,
+                color = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.surfaceVariant,
+                shape = RoundedCornerShape(8.dp)
+            )
             .clickable { onClick() }
             .padding(16.dp)
     ) {

@@ -8,7 +8,11 @@ import javax.inject.Inject
 class ScheduleNotification @Inject constructor() {
 
     operator fun invoke(context: Context, delay: Long, data: Data) {
-        NotificationSchedulerWorker.scheduleNotification(context, delay, data)
+        NotificationSchedulerWorker.scheduleNotification(
+            context = context,
+            delay = delay,
+            data = data
+        )
     }
 
 }

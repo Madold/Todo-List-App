@@ -1,5 +1,6 @@
 package com.markusw.app.ui.view.screens.writtetodo.composables
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -29,7 +30,7 @@ fun TaskDescriptionField(
             placeholderText = placeholderText,
             isError = isError
         )
-        if (isError) {
+        AnimatedVisibility(visible = isError) {
             Spacer(modifier = Modifier.height(8.dp))
             ErrorText(errorMessage = errorMessage)
         }
