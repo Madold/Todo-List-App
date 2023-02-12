@@ -24,7 +24,6 @@ fun TaskHourField(
         Text(
             text = "At"
         )
-        Spacer(modifier = Modifier.height(8.dp))
         DialogField(
             value = value,
             placeholder = placeholder,
