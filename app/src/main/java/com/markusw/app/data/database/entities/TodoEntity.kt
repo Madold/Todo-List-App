@@ -12,5 +12,7 @@ data class TodoEntity(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "isDone") var isDone: Boolean = false,
+    @ColumnInfo(name = "endDate") val endDate: String = "",
+    @ColumnInfo(name = "endHour") val endHour: String = ""
 )
 
