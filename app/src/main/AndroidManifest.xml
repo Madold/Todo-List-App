@@ -19,7 +19,8 @@
             android:name=".ui.view.activities.main.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.TodoListApp">
+            android:theme="@style/SplashScreen"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
