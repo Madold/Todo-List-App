@@ -5,12 +5,14 @@ package com.markusw.app.ui.view
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -69,7 +71,12 @@ fun NavHost(
                 enterTransition = {
                     expandHorizontally()
                 }, popExitTransition = {
-                    shrinkHorizontally()
+                    slideOutHorizontally(
+                        targetOffsetX = { -1300 },
+                        animationSpec = tween(
+                            durationMillis = 500
+                        )
+                    )
                 }
             ) { navBackStackEntry ->
                 val todoId = navBackStackEntry.arguments?.getInt("id")
@@ -78,7 +85,26 @@ fun NavHost(
                     todoId = todoId!!
                 )
             }
-            composable(route = Screens.SettingsScreen.route) {
+            composable(
+                route = Screens.SettingsScreen.route,
+                enterTransition = {
+                    slideInHorizontally(
+                        initialOffsetX = { 1300 },
+                        animationSpec = tween(
+                            durationMillis = 500
+                        )
+                    )
+                },
+                popExitTransition = {
+                    shrinkHorizontally(
+                        animationSpec = tween(
+                            durationMillis = 700
+                        ),
+                        shrinkTowards = Alignment.CenterHorizontally
+                    )
+                }
+
+            ) {
                 SettingsScreen(navController = navController)
             }
         }

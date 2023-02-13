@@ -85,13 +85,6 @@ fun WriteTodoScreen(
                     }
 
                     // For android versions Tiramisu or above
-                    if (!isReminderChecked) {
-                        viewModel.saveTask(context)
-                        focusManager.clearFocus()
-                        return@BottomButton
-                    }
-
-                    // For android versions Tiramisu or above and reminder checked
                     permissionState.launchPermissionRequest()
 
                     if (!permissionState.status.isGranted && !permissionState.status.shouldShowRationale) {
