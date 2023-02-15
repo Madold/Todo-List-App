@@ -5,7 +5,6 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class FormatDate @Inject constructor() {
-
     operator fun invoke(date: LocalDate): String {
         return DateFormatter.format(date)
     }

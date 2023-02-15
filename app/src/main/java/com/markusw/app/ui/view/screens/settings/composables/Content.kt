@@ -8,8 +8,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.markusw.app.R
 import com.markusw.app.domain.model.UserSettings
 import com.markusw.app.ui.viewmodel.SettingsViewModel
 
@@ -38,14 +40,14 @@ fun Content(
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(text = "Preferences")
+        Text(text = stringResource(id = R.string.preferences_text))
         Divider()
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Dark Mode")
+            Text(text = stringResource(id = R.string.dark_mode_text))
             Switch(
                 checked = isDarkModeEnabled,
                 onCheckedChange = {
@@ -55,13 +57,14 @@ fun Content(
             )
         }
 
+        // Dynamic colors are only available on Android 12+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Dynamic colors")
+                Text(text = stringResource(id = R.string.dynamic_colors_text))
                 Switch(
                     checked = isDynamicColorsEnabled,
                     onCheckedChange = {

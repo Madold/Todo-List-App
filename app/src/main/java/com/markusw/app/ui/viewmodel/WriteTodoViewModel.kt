@@ -101,7 +101,6 @@ class WriteTodoViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            validationEventChannel.send(ValidationEvent.Success)
             saveTask(
                 Todo(
                     title = _inputsState.value.taskTitle,
@@ -114,6 +113,8 @@ class WriteTodoViewModel @Inject constructor(
             if(_inputsState.value.isScheduled) {
                 scheduleTaskNotification(context = context)
             }
+
+            validationEventChannel.send(ValidationEvent.Success)
         }
     }
 

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SplashScreen" parent="Theme.SplashScreen" >
+        <item name="windowSplashScreenBackground">#1C1C17</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.TodoListApp</item>
+    </style>
+</resources>

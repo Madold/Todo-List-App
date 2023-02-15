@@ -16,7 +16,7 @@ class TimeFormatter {
                 "$minutes"
             }
 
-            return "$hoursString:$minutesString ${if (hours > 12) "PM" else "AM"}"
+            return "$hoursString:$minutesString ${if (hours >= 12) "PM" else "AM"}"
         }
     }
 }

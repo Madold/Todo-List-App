@@ -8,10 +8,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.markusw.app.R
 
 @Composable
 fun BottomButton(
@@ -26,7 +28,8 @@ fun BottomButton(
         contentPadding = PaddingValues(vertical = 16.dp),
     ) {
         Text(
-            text = "Create new task", style = TextStyle(
+            text = stringResource(id = R.string.create_new_task_text),
+            style = TextStyle(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )

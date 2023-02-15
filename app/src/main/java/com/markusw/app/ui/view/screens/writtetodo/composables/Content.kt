@@ -4,11 +4,14 @@ package com.markusw.app.ui.view.screens.writtetodo.composables
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.markusw.app.ui.viewmodel.WriteTodoViewModel
@@ -18,6 +21,7 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.clock.ClockDialog
 import com.maxkeppeler.sheets.clock.models.ClockConfig
 import com.maxkeppeler.sheets.clock.models.ClockSelection
+import com.markusw.app.R
 
 @Composable
 fun Content(
@@ -28,6 +32,7 @@ fun Content(
     val notificationDeniedDialog by viewModel.notificationDeniedDialog.collectAsState()
     val calendarState = rememberSheetState()
     val clockState = rememberSheetState()
+    val scrollState = rememberScrollState()
 
     CalendarDialog(
         state = calendarState,
@@ -49,22 +54,23 @@ fun Content(
         modifier = Modifier
             .padding(paddingValues)
             .fillMaxSize()
-            .padding(horizontal = 16.dp),
+            .padding(top = 0.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         TaskTitleField(
             value = inputsState.taskTitle,
             onValueChange = viewModel::onTaskTitleChanged,
-            placeholderText = "Ex: Study in the morning",
+            placeholderText = stringResource(id = R.string.task_title_placeholder),
             isError = inputsState.taskTitleError != null,
-            errorMessage = inputsState.taskTitleError
+            errorMessage = inputsState.taskTitleError?.asString()
         )
         TaskDescriptionField(
             value = inputsState.taskDescription,
             onValueChange = viewModel::onTaskDescriptionChanged,
-            placeholderText = "Ex: Study for 2 hours using the book",
+            placeholderText = stringResource(id = R.string.task_description_placeholder),
             isError = inputsState.taskDescriptionError != null,
-            errorMessage = inputsState.taskDescriptionError
+            errorMessage = inputsState.taskDescriptionError?.asString()
         )
         ScheduleTaskSwitch(
             checked = inputsState.isScheduled,

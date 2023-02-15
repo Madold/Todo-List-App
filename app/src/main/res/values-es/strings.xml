@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Todo it</string>
+    <string name="tasks_text">Mis tareas</string>
+    <string name="morning_greeting">Buenos días</string>
+    <string name="afternoon_greeting">Buenas tardes</string>
+    <string name="evening_greeting">Buenas noches</string>
+    <string name="empty_list_text">Nada aquí, estas libre :)</string>
+    <string name="task_created_text">Tarea creada</string>
+    <string name="ok">OK</string>
+    <string name="notification_permission_denied">Permiso de notificación denegado, activelo en ajustes del dispositivo</string>
+    <string name="task_title_placeholder">Ej: Estudiar en la mañana</string>
+    <string name="task_description_placeholder">Ej: Estudiar 2 horas con el libro de matematicas</string>
+    <string name="task_title_text">Título</string>
+    <string name="task_description_text">Descripción</string>
+    <string name="remember_task_text">Recordar</string>
+    <string name="pick_date_text">Elije una fecha</string>
+    <string name="pick_time_text">Elije una hora</string>
+    <string name="at_text">A las</string>
+    <string name="warning_text">¡Advertencia!</string>
+    <string name="notification_needed_text">¡El permiso de notificación es necesario para recordar tus tareas!</string>
+    <string name="notification_denied_warning_text">Si niegas denuevo el permiso de notificación, tendras que activarlo manualmente en los ajustes del dispositivo</string>
+    <string name="create_new_task_text">Crear nueva tarea</string>
+    <string name="task_information_text">Información de la tarea</string>
+    <string name="scheduled_for_text">Programada para</string>
+    <string name="settings_text">Ajustes</string>
+    <string name="preferences_text">Preferencias</string>
+    <string name="dark_mode_text">Modo oscuro</string>
+    <string name="dynamic_colors_text">Colores dinámicos</string>
+    <string name="title_error_message">El título no puede estar en blanco</string>
+    <string name="description_empty_error_message">La descripción no puede estar vacía</string>
+    <string name="date_empty_error_message">No has seleccionado una fecha</string>
+    <string name="time_empty_error_message">No has seleccionado una hora</string>
+</resources>

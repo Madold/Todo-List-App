@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.markusw.app.R
 
 @Composable
 fun TaskDescriptionField(
@@ -19,7 +21,7 @@ fun TaskDescriptionField(
 ) {
     Column {
         Text(
-            text = "Description"
+            text = stringResource(id = R.string.task_description_text)
         )
         Spacer(modifier = Modifier.height(8.dp))
         InputField(

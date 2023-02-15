@@ -43,7 +43,7 @@ fun NavigationDrawer(
                     NavigationDrawerItem(
                         label = {
                             Text(
-                                text = destination.label,
+                                text = destination.label.asString(),
                                 style = TextStyle(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )

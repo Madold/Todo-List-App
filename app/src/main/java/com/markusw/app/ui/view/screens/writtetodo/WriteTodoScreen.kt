@@ -18,6 +18,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import com.markusw.app.R
 import com.markusw.app.domain.ValidationEvent
 import com.markusw.app.ui.view.screens.writtetodo.composables.*
 import com.markusw.app.ui.viewmodel.WriteTodoViewModel
@@ -30,8 +31,6 @@ fun WriteTodoScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val snackbarHostState = remember { SnackbarHostState() }
-    val inputsState by viewModel.inputsState.collectAsState()
-    val isReminderChecked by remember { derivedStateOf { inputsState.isScheduled } }
     val permissionState = rememberPermissionState(permission = POST_NOTIFICATIONS)
     val context = LocalContext.current
 
@@ -46,8 +45,8 @@ fun WriteTodoScreen(
                     viewModel.clearInputs()
                     snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(
-                        message = "Task created",
-                        actionLabel = "Ok",
+                        message = context.getString(R.string.task_created_text),
+                        actionLabel = context.getString(R.string.ok),
                         duration = SnackbarDuration.Short
                     )
                 }
@@ -85,19 +84,12 @@ fun WriteTodoScreen(
                     }
 
                     // For android versions Tiramisu or above
-                    if (!isReminderChecked) {
-                        viewModel.saveTask(context)
-                        focusManager.clearFocus()
-                        return@BottomButton
-                    }
-
-                    // For android versions Tiramisu or above and reminder checked
                     permissionState.launchPermissionRequest()
 
                     if (!permissionState.status.isGranted && !permissionState.status.shouldShowRationale) {
                         Toast.makeText(
                             context,
-                            "Notification permission denied, enable it in settings",
+                            context.getString(R.string.notification_permission_denied),
                             Toast.LENGTH_SHORT
                         ).show()
                         focusManager.clearFocus()
