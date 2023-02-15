@@ -10,8 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.markusw.app.R
 import com.markusw.app.ui.viewmodel.WriteTodoViewModel
 import com.maxkeppeker.sheets.core.models.base.SheetState
 
@@ -33,7 +35,7 @@ fun DateFields(
                 calendarState.show()
             },
             placeholder = {
-                Text("Pick a date")
+                Text(stringResource(id = R.string.pick_date_text))
             },
             trailingIcon = {
                 Icon(
@@ -42,7 +44,7 @@ fun DateFields(
                 )
             },
             isError = inputsState.endDateError != null,
-            errorMessage = inputsState.endDateError
+            errorMessage = inputsState.endDateError?.asString()
         )
         TaskHourField(
             value = if (inputsState.endHour != null && inputsState.endMinute != null) viewModel.getFormattedTime() else "",
@@ -56,10 +58,10 @@ fun DateFields(
                 )
             },
             placeholder = {
-                Text("Pick a time")
+                Text(stringResource(id = R.string.pick_time_text))
             },
             isError = inputsState.timeInputError != null,
-            errorMessage = inputsState.timeInputError
+            errorMessage = inputsState.timeInputError?.asString()
         )
     }
 }

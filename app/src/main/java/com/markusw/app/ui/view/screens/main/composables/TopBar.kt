@@ -9,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import com.markusw.app.R
 import java.time.LocalTime
 import java.util.*
 
@@ -44,18 +46,21 @@ fun TopBar(
 
 @Composable
 fun getGreeting(): State<String> {
+
+    val context = LocalContext.current
+
     return produceState(initialValue = "") {
         value = when (LocalTime.now().hour) {
-                in (0 until 12) -> {
-                    "Good morning"
-                }
-                in (12 until 18) -> {
-                    "Good afternoon"
-                }
-                else -> {
-                    "Good evening"
-                }
+            in (0 until 12) -> {
+                context.getString(R.string.morning_greeting)
             }
+            in (12 until 18) -> {
+                context.getString(R.string.afternoon_greeting)
+            }
+            else -> {
+                context.getString(R.string.evening_greeting)
+            }
+        }
     }
 }
 

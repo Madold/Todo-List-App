@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">Todo it</string>
+    <string name="tasks_text">My tasks</string>
+    <string name="morning_greeting">Good morning</string>
+    <string name="afternoon_greeting">Good afternoon</string>
+    <string name="evening_greeting">Good evening</string>
+    <string name="empty_list_text">Nothing here, you are free :)</string>
+    <string name="task_created_text">Task created</string>
+    <string name="ok">OK</string>
+    <string name="notification_permission_denied">Notification permission denied, enable it in settings</string>
+    <string name="task_title_placeholder">Ex: Study in the morning</string>
+    <string name="task_description_placeholder">Ex: Study for 2 hours using the book</string>
+    <string name="task_title_text">Title</string>
+    <string name="task_description_text">Description</string>
+    <string name="remember_task_text">Remember</string>
+    <string name="pick_date_text">Pick a date</string>
+    <string name="pick_time_text">Pick a date</string>
+    <string name="at_text">At</string>
+    <string name="warning_text">Warning!</string>
+    <string name="notification_needed_text">Notification permission is needed to remember you your tasks!</string>
+    <string name="notification_denied_warning_text">If you deny again the permission then you have to enable it manually in settings.</string>
+    <string name="create_new_task_text">Create new task</string>
+    <string name="task_information_text">Task information</string>
+    <string name="scheduled_for_text">Scheduled for</string>
+    <string name="settings_text">Settings</string>
+    <string name="preferences_text">Preferences</string>
+    <string name="dark_mode_text">Dark mode</string>
+    <string name="dynamic_colors_text">Dynamic colors</string>
+    <string name="title_error_message">Title cannot be empty</string>
+    <string name="description_empty_error_message">Description cannot be empty</string>
+    <string name="date_empty_error_message">Date cannot be empty</string>
+    <string name="time_empty_error_message">Time cannot be empty</string>
 </resources>

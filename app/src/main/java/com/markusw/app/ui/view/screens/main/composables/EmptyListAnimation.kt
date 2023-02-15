@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.*
@@ -35,7 +36,7 @@ fun EmptyListAnimation() {
             modifier = Modifier.fillMaxWidth()
         )
         Text(
-            text = "Nothing here, you're free :)",
+            text = stringResource(id = R.string.empty_list_text),
             style = TextStyle(
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f),
                 fontSize = 20.sp

@@ -1,5 +1,7 @@
 package com.markusw.app.domain.usecases
 
+import com.markusw.app.R
+import com.markusw.app.ui.view.UiText
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -9,7 +11,7 @@ class ValidateTaskDate @Inject constructor() {
         if(scheduled && date == null) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "Date cannot be empty"
+                errorMessage = UiText.StringResource(id = R.string.date_empty_error_message)
             )
         }
 

@@ -4,7 +4,6 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import androidx.work.*
-import com.markusw.app.R
 import com.markusw.app.core.Constants
 import com.markusw.app.core.utils.NotificationBuilder
 import java.util.concurrent.TimeUnit
@@ -48,7 +47,7 @@ class NotificationSchedulerWorker(
     private fun showNotification(notification: Notification) {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(1, notification)
+        notificationManager.notify(0, notification)
     }
 
 }

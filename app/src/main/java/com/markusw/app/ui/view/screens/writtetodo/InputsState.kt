@@ -1,16 +1,17 @@
 package com.markusw.app.ui.view.screens.writtetodo
 
+import com.markusw.app.ui.view.UiText
 import java.time.LocalDate
 
 data class InputsState(
     val taskTitle: String = "",
-    val taskTitleError: String? = null,
+    val taskTitleError: UiText? = null,
     val taskDescription: String = "",
-    val taskDescriptionError: String? = null,
+    val taskDescriptionError: UiText? = null,
     val isScheduled: Boolean = false,
     val endDate: LocalDate? = null,
-    val endDateError: String? = null,
+    val endDateError: UiText? = null,
     val endHour: Int? = null,
     val endMinute: Int? = null,
-    val timeInputError : String? = null,
+    val timeInputError : UiText? = null,
 )

@@ -7,4 +7,5 @@ object Constants {
     const val TODO_TITLE = "todo_title"
     const val TODO_DESCRIPTION = "todo_description"
     const val USER_SETTINGS_TABLE = "user_settings_table"
+    val DEFAULT_VIBRATION_PATTERN = longArrayOf(1000, 500, 1000, 500, 1000)
 }

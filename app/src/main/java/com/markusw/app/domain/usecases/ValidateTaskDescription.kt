@@ -1,5 +1,7 @@
 package com.markusw.app.domain.usecases
 
+import com.markusw.app.R
+import com.markusw.app.ui.view.UiText
 import javax.inject.Inject
 
 class ValidateTaskDescription @Inject constructor() {
@@ -8,7 +10,7 @@ class ValidateTaskDescription @Inject constructor() {
         if (description.isBlank()) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "Description cannot be empty"
+                errorMessage = UiText.StringResource(R.string.description_empty_error_message)
             )
         }
 

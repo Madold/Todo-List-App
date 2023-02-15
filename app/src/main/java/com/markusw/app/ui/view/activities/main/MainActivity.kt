@@ -4,6 +4,7 @@ package com.markusw.app.ui.view.activities.main
 
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
+        SystemClock.sleep(1500)
         setContent {
 
             val settingsViewModel: SettingsViewModel = hiltViewModel()

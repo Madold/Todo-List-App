@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -97,20 +98,20 @@ fun CardContent(onConfirm: () -> Unit) {
     ) {
         Spacer(modifier = Modifier.height(30.dp))
         Text(
-            text = "Warning!", style = TextStyle(
+            text = stringResource(id = R.string.warning_text), style = TextStyle(
                 fontSize = 22.sp
             )
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Notification permission is needed to remember you your tasks!",
+            text = stringResource(id = R.string.notification_needed_text),
             style = TextStyle(
                 textAlign = TextAlign.Center
             )
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "If you deny again the permission then you have to enable it manually in settings.",
+            text = stringResource(id = R.string.notification_denied_warning_text),
             style = TextStyle(
                 textAlign = TextAlign.Center
             )
@@ -121,7 +122,7 @@ fun CardContent(onConfirm: () -> Unit) {
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Ok")
+            Text(text = stringResource(id = R.string.ok))
         }
     }
 }

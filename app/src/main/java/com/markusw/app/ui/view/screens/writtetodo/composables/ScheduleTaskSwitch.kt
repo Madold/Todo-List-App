@@ -7,7 +7,9 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.markusw.app.R
 
 @Composable
 fun ScheduleTaskSwitch(
@@ -16,7 +18,7 @@ fun ScheduleTaskSwitch(
 ) {
     Column {
         Text(
-            text = "Remember"
+            text = stringResource(id = R.string.remember_task_text)
         )
         Spacer(modifier = Modifier.height(8.dp))
         Switch(
