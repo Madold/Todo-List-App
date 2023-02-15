@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.Data
+import com.markusw.app.R
 import com.markusw.app.core.Constants
 import com.markusw.app.core.utils.DelayComputer
 import com.markusw.app.domain.ValidationEvent
@@ -136,19 +137,19 @@ class WriteTodoViewModel @Inject constructor(
 
     private fun scheduleTaskNotification(context: Context) {
         viewModelScope.launch {
-            val data = buildData()
+            val data = buildData(context)
             val delay = computeDelay()
             scheduleNotification(context, delay, data)
         }
     }
 
-    private fun buildData(): Data {
+    private fun buildData(context: Context): Data {
         return Data.Builder()
             .apply {
-                putString(Constants.TODO_TITLE, "Reminder")
+                putString(Constants.TODO_TITLE, context.getString(R.string.reminder_text))
                 putString(
                     Constants.TODO_DESCRIPTION,
-                    "Hi, this is a reminder for your task: ${_inputsState.value.taskTitle}!"
+                    "${context.getString(R.string.reminder_description_text)} ${_inputsState.value.taskTitle}!"
                 )
             }
             .build()
