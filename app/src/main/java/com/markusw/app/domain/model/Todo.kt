@@ -4,8 +4,8 @@ import com.markusw.app.data.database.entities.TodoEntity
 
 data class Todo(
     val id: Int = 0,
-    val title: String,
-    val description: String,
+    val title: String = "",
+    val description: String ="",
     var isDone: Boolean = false,
     val endDate: String = "",
     val endHour: String = "",

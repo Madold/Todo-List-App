@@ -14,13 +14,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.markusw.app.ui.view.screens.Screens
 import com.markusw.app.ui.view.screens.main.MainScreen
 import com.markusw.app.ui.view.screens.settings.SettingsScreen
@@ -78,11 +76,9 @@ fun NavHost(
                         )
                     )
                 }
-            ) { navBackStackEntry ->
-                val todoId = navBackStackEntry.arguments?.getInt("id")
+            ) {
                 TaskInfoScreen(
                     navController = navController,
-                    todoId = todoId!!
                 )
             }
             composable(

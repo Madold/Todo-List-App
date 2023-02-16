@@ -37,8 +37,8 @@ class Repository @Inject constructor(
         todoDao.deleteAllTodos()
     }
 
-    override fun getTodoById(id: Int): Flow<Todo> {
-        return todoDao.getTodoById(id).map { it.toDomainModel() }
+    override suspend fun getTodoById(id: Int): Todo {
+        return todoDao.getTodoById(id).toDomainModel()
     }
 
     fun getSettings(): Flow<UserSettings?> {
