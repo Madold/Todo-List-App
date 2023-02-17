@@ -30,4 +30,6 @@
     <string name="description_empty_error_message">La descripción no puede estar vacía</string>
     <string name="date_empty_error_message">No has seleccionado una fecha</string>
     <string name="time_empty_error_message">No has seleccionado una hora</string>
+    <string name="reminder_text">Recordatorio</string>
+    <string name="reminder_description_text">Hola, esto es un recordatorio de tu tarea:</string>
 </resources>

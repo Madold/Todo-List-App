@@ -30,4 +30,6 @@
     <string name="description_empty_error_message">Description cannot be empty</string>
     <string name="date_empty_error_message">Date cannot be empty</string>
     <string name="time_empty_error_message">Time cannot be empty</string>
+    <string name="reminder_text">Reminder</string>
+    <string name="reminder_description_text">Hi, this is a reminder for your task:</string>
 </resources>
