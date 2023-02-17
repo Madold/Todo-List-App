@@ -4,8 +4,6 @@ be added in a near future and a list of bugs that need to be fixed.
 
 
 ## Features
-- Shimmer loading effect
-- Multi language support
 - Possibility to take a photo in the task info screen
 - Be able to schedule a task for multiple days
 
