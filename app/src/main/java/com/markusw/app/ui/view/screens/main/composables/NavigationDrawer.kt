@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -51,7 +52,7 @@ fun NavigationDrawer(
                         },
                         icon = {
                             Icon(
-                                imageVector = destination.icon,
+                                painter = painterResource(id = destination.icon),
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onBackground
                             )
