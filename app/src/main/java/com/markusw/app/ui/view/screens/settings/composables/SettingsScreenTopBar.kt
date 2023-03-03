@@ -19,7 +19,10 @@ fun SettingScreenTopBar(
         },
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = null
+                )
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(

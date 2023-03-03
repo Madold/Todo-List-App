@@ -3,11 +3,13 @@ package com.markusw.app.ui.view.screens.settings.composables
 import android.os.Build
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -53,6 +55,13 @@ fun Content(
                 onCheckedChange = {
                     val newSettings = settings?.copy(isDarkModeEnabled = it) ?: UserSettings(isDarkModeEnabled = it)
                     viewModel.saveSettings(newSettings)
+                },
+                thumbContent = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_moon),
+                        contentDescription = null,
+                        modifier = Modifier.size(22.dp)
+                    )
                 }
             )
         }
@@ -70,6 +79,13 @@ fun Content(
                     onCheckedChange = {
                         val newSettings = settings?.copy(isDynamicColorsEnabled = it) ?: UserSettings(isDynamicColorsEnabled = it)
                         viewModel.saveSettings(newSettings)
+                    },
+                    thumbContent = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_shine),
+                            contentDescription = null,
+                            modifier = Modifier.size(22.dp)
+                        )
                     }
                 )
             }

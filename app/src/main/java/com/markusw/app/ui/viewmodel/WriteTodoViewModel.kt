@@ -8,6 +8,7 @@ import com.markusw.app.R
 import com.markusw.app.core.Constants
 import com.markusw.app.core.utils.DelayComputer
 import com.markusw.app.domain.ValidationEvent
+import com.markusw.app.domain.model.NotificationItem
 import com.markusw.app.domain.model.Todo
 import com.markusw.app.domain.usecases.*
 import com.markusw.app.ui.view.screens.writtetodo.InputsState
@@ -91,7 +92,7 @@ class WriteTodoViewModel @Inject constructor(
         ).any { !it.successful }
 
 
-        if(isAnyError) {
+        if (isAnyError) {
             _inputsState.value = _inputsState.value.copy(
                 taskTitleError = titleResult.errorMessage,
                 taskDescriptionError = descriptionResult.errorMessage,
@@ -111,7 +112,7 @@ class WriteTodoViewModel @Inject constructor(
                 )
             )
 
-            if(_inputsState.value.isScheduled) {
+            if (_inputsState.value.isScheduled) {
                 scheduleTaskNotification(context = context)
             }
 
@@ -136,10 +137,23 @@ class WriteTodoViewModel @Inject constructor(
     }
 
     private fun scheduleTaskNotification(context: Context) {
-        viewModelScope.launch {
+        /*
+
+            This method is not working properly in xiaomi devices like poco x3 pro. I don't know why.
+            For now I'll use AlarmManager instead of WorkManager to schedule notifications.
+
+
             val data = buildData(context)
             val delay = computeDelay()
-            scheduleNotification(context, delay, data)
+            scheduleNotification(context, delay, data)*/
+        viewModelScope.launch {
+            val delay = computeDelay()
+            val data = NotificationItem(
+                delay = delay,
+                contentText = "${context.getString(R.string.reminder_description_text)} ${_inputsState.value.taskTitle}!",
+                title = context.getString(R.string.reminder_text)
+            )
+            scheduleNotification(context, data)
         }
     }
 

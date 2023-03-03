@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -98,8 +100,6 @@ dependencies {
     implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:$sheet_compose_dialogs_version"
     //Clock dialog
     implementation "com.maxkeppeler.sheets-compose-dialogs:clock:$sheet_compose_dialogs_version"
-    //Material icons extended
-    implementation "androidx.compose.material:material-icons-extended:$material_icons_extended_version"
     //Swipe to dismiss
     implementation "me.saket.swipe:swipe:$swipe_to_dismiss_version"
     //Accompanist permissions
@@ -108,6 +108,15 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$work_manager_version"
     //Mockk
     testImplementation "io.mockk:mockk:$mockk_version"
+
+    // Firebase SDKs
+
+    // Firebase BOM
+    implementation platform('com.google.firebase:firebase-bom:31.2.2')
+    // Firebase Analytics
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    // Firebase crashlytics
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
