@@ -7,8 +7,6 @@ import android.content.Intent
 import com.markusw.app.core.Constants
 import com.markusw.app.domain.model.NotificationItem
 import java.util.*
-import javax.inject.Inject
-import kotlin.time.seconds
 
 class AndroidNotificationScheduler(
     private val context: Context
