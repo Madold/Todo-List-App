@@ -63,5 +63,8 @@ val md_theme_dark_surfaceTint = Color(0xFFCBCC58)
 val md_theme_dark_outlineVariant = Color(0xFF48473A)
 val md_theme_dark_scrim = Color(0xFF000000)
 
+// Custom colors
+val OceanBlue = Color(0xFF3498db)
+
 
 val seed = Color(0xFFF8F988)

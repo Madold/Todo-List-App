@@ -6,10 +6,15 @@ import android.content.Context
 import android.content.Intent
 import com.markusw.app.core.Constants
 import com.markusw.app.domain.model.NotificationItem
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
+import javax.inject.Inject
 
-class AndroidNotificationScheduler(
-    private val context: Context
+
+//TODO: Make this class injectable
+
+class AndroidNotificationScheduler @Inject constructor (
+     @ApplicationContext private val context: Context
 ): NotificationScheduler {
 
     private val alarmManager = context.getSystemService(AlarmManager::class.java)
