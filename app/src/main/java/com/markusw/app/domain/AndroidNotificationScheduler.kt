@@ -10,9 +10,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
 import javax.inject.Inject
 
-
-//TODO: Make this class injectable
-
 class AndroidNotificationScheduler @Inject constructor (
      @ApplicationContext private val context: Context
 ): NotificationScheduler {

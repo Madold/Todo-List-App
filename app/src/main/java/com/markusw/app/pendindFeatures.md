@@ -4,6 +4,10 @@ be added in a near future and a list of bugs that need to be fixed.
 
 
 ## Features
+- Firebase authentication
+- Cloud storage for tasks
+- Cloud storage for user settings
+- Cloud messaging for scheduled tasks
 - Possibility to take a photo in the task info screen
 - Be able to schedule a task for multiple days
 

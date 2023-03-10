@@ -1,18 +1,19 @@
 package com.markusw.app.ui.view.screens.presentation.composables
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -24,74 +25,80 @@ import com.markusw.app.ui.theme.AppTheme
 
 @Composable
 fun LoginSlide(
-    modifier: Modifier = Modifier,
+        emailValue: String,
+        onEmailChange: (String) -> Unit,
+        modifier: Modifier = Modifier,
+        emailErrorMessage: String? = null,
+        passwordValue: String,
+        onPasswordChange: (String) -> Unit,
+        passwordErrorMessage: String? = null,
+        onGoogleButtonClick: () -> Unit,
+        onFaceBookButtonClick: () -> Unit
 ) {
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.login_ilustration),
-            contentDescription = null,
-            modifier = Modifier.fillMaxWidth(0.8f)
-        )
-        Text(
-            text = "Get started now",
-            style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
-            )
-        )
-        EmailField(
-            value = "someone@gmail.com",
-            onValueChange = {},
-            modifier = Modifier.fillMaxWidth(),
-            errorMessage = "Please enter a valid email address",
-            label = {
-                Text(text = "Email")
-            }
-        )
-        PasswordField(
-            value = "*********",
-            onValueChange = {},
-            modifier = Modifier.fillMaxWidth(),
-            errorMessage = "Please enter a valid password",
-            label = {
-                Text(text = "Password")
-            }
-        )
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.onSurfaceVariant
-            ),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Text(text = "Login")
-        }
-        RegisterText(
-            onClick = {
+    val focusManager = LocalFocusManager.current
 
+    Column(
+            modifier = modifier
+                    .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Image(painter = painterResource(id = R.drawable.login_ilustration),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxHeight(0.32f))
+            Text(text = "Get started now",
+                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 18.sp))
+            EmailField(value = emailValue,
+                    onValueChange = onEmailChange,
+                    modifier = Modifier.fillMaxWidth(),
+                    errorMessage = emailErrorMessage,
+                    label = {
+                        Text(text = "Email")
+                    },
+                    onDone = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+            )
+            PasswordField(
+                    value = passwordValue,
+                    onValueChange = onPasswordChange,
+                    modifier = Modifier.fillMaxWidth(),
+                    errorMessage = passwordErrorMessage,
+                    label = {
+                        Text(text = "Password")
+                    },
+                    onDone = {
+                        focusManager.clearFocus()
+                    }
+            )
+            Button(modifier = Modifier.fillMaxWidth(),
+                    onClick = { },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onSurfaceVariant),
+                    shape = RoundedCornerShape(8.dp)) {
+                Text(text = "Login")
             }
-        )
-        OneTapSignInOptions(
-            onGoogleButtonClick = { },
-            onFacebookButtonClick = { }
-        )
+            RegisterText(onClick = {})
+            OneTapSignInOptions(
+                    onGoogleButtonClick = onGoogleButtonClick,
+                    onFacebookButtonClick = onFaceBookButtonClick
+            )
+        }
     }
 }
 
 @Preview(showSystemUi = true)
 @Composable
 fun LoginSlidePreview() {
-    AppTheme(
-        dynamicColor = false
-    ) {
-        LoginSlide()
+    AppTheme(dynamicColor = false) {
+        LoginSlide(
+                emailValue = "Someone@gmail.com",
+                onEmailChange = {},
+                passwordValue = "**********",
+                onPasswordChange = {},
+                onFaceBookButtonClick = {},
+                onGoogleButtonClick = {}
+        )
     }
 }

@@ -21,6 +21,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.markusw.app.ui.view.screens.Screens
 import com.markusw.app.ui.view.screens.main.MainScreen
+import com.markusw.app.ui.view.screens.presentation.PresentationScreen
 import com.markusw.app.ui.view.screens.settings.SettingsScreen
 import com.markusw.app.ui.view.screens.todoinfo.TaskInfoScreen
 import com.markusw.app.ui.view.screens.writtetodo.WriteTodoScreen
@@ -38,8 +39,13 @@ fun NavHost(
     ) {
         AnimatedNavHost(
             navController = navController,
-            startDestination = Screens.MainScreen.route
+            startDestination = Screens.PresentationScreen.route
         ) {
+            composable(
+                    route = Screens.PresentationScreen.route,
+            ) {
+                PresentationScreen()
+            }
             composable(
                 route = Screens.MainScreen.route,
             ) {

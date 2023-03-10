@@ -1,8 +1,11 @@
 package com.markusw.app.ui.view.screens.presentation
 
+import com.markusw.app.ui.view.UiText
+
 data class PresentationState(
     val email: String = "",
-    val emailError: String? = null,
+    val emailError: UiText? = null,
     val password: String = "",
-    val passwordError: String? = null,
+    val passwordError: UiText? = null,
+    val isLoading: Boolean = false
 )
