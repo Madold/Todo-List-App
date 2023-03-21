@@ -1,10 +1,12 @@
 package com.markusw.app.ui.view.screens.main.composables
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -16,11 +18,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.markusw.app.R
-import com.markusw.app.ui.view.UiState.*
+import com.markusw.app.domain.SignOutEvent
+import com.markusw.app.ui.view.screens.Screens
 import com.markusw.app.ui.viewmodel.MainViewModel
+import kotlinx.coroutines.delay
 
 @Composable
-fun Content(
+fun MainScreenContent(
     paddingValues: PaddingValues,
     navController: NavController,
     viewModel: MainViewModel = hiltViewModel()
@@ -33,6 +37,29 @@ fun Content(
         }
     }
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+
+
+    LaunchedEffect(key1 = viewModel) {
+        viewModel.logOutEventChannel.collect { signOutEvent ->
+            val lastSlideIndex = 2
+
+            when (signOutEvent) {
+                is SignOutEvent.Success -> {
+                    Toast.makeText(
+                        context,
+                        "Successfully signed out",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    delay(500)
+                    navController.popBackStack()
+                    navController.navigate(
+                        route = "${Screens.PresentationScreen.route}?selectedSlide=${lastSlideIndex}"
+                    )
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -59,19 +86,16 @@ fun Content(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Box {
-            when (uiState) {
-                is Rest -> {
-                    TaskList(
-                        list = taskList,
-                        viewModel = viewModel,
-                        navController = navController
-                    )
-                }
-                is Loading -> {
-                    ShimmerLoading(
-                        itemsCount = 8
-                    )
-                }
+            if (uiState.isLoading) {
+                ShimmerLoading(
+                    itemsCount = 8
+                )
+            } else {
+                TaskList(
+                    list = taskList,
+                    viewModel = viewModel,
+                    navController = navController
+                )
             }
         }
     }

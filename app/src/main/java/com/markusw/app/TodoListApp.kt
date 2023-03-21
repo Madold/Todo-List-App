@@ -7,12 +7,15 @@ import android.content.Context
 import android.media.AudioAttributes
 import android.net.Uri
 import com.markusw.app.core.Constants
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class TodoListApp: Application() {
     override fun onCreate() {
         super.onCreate()
+
         val todoNotificationChannel = NotificationChannel(
             Constants.TODO_NOTIFICATION_CHANNEL_ID,
             Constants.TODO_NOTIFICATION_NAME,
@@ -26,5 +29,7 @@ class TodoListApp: Application() {
         todoNotificationChannel.setSound(notificationSound, soundAttributes)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(todoNotificationChannel)
+
+        Logger.addLogAdapter(AndroidLogAdapter())
     }
 }

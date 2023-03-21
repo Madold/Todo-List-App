@@ -6,4 +6,5 @@ sealed class Screens(val route: String) {
     object TodoInfoScreen : Screens("todo_info_screen")
     object WriteTodoScreen : Screens("write_todo_screen")
     object SettingsScreen : Screens("settings_screen")
+    object RegisterScreen : Screens("register_screen")
 }

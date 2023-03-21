@@ -15,12 +15,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.markusw.app.R
 import com.markusw.app.domain.model.UserSettings
-import com.markusw.app.ui.viewmodel.SettingsViewModel
+import com.markusw.app.ui.viewmodel.MainViewModel
 
 @Composable
 fun Content(
     paddingValues: PaddingValues,
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel()
 ) {
 
     val settings by viewModel.settings.collectAsState(initial = UserSettings())

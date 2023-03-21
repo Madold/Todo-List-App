@@ -14,7 +14,8 @@ fun EmailField(
     label: @Composable () -> Unit = {},
     onDone: () -> Unit = {},
     trailingIcon: @Composable () -> Unit = {},
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    singleLine: Boolean = true,
 ) {
     BaseField(
         value = value,
@@ -24,7 +25,8 @@ fun EmailField(
         errorMessage = errorMessage,
         label = label,
         onDone = onDone,
+        singleLine = singleLine,
         trailingIcon = trailingIcon,
-        visualTransformation = visualTransformation
+        visualTransformation = visualTransformation,
     )
 }

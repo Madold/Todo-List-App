@@ -1,5 +1,6 @@
 package com.markusw.app.core
 
+import androidx.compose.runtime.staticCompositionLocalOf
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.crashlytics.ktx.crashlytics
@@ -14,3 +15,5 @@ class FirebaseClient @Inject constructor() {
     val crashlytics = Firebase.crashlytics
     val currentUser get() = auth.currentUser
 }
+
+val LocalFirebaseClient = staticCompositionLocalOf { FirebaseClient() }

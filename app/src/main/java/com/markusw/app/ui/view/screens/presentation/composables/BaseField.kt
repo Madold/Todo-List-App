@@ -26,7 +26,8 @@ fun BaseField(
     label: @Composable () -> Unit = {},
     onDone: () -> Unit = {},
     trailingIcon: @Composable () -> Unit = {},
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    singleLine: Boolean = false,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -42,7 +43,8 @@ fun BaseField(
             label = label,
             keyboardActions = KeyboardActions(onDone = { onDone() }),
             trailingIcon = trailingIcon,
-            visualTransformation = visualTransformation
+            visualTransformation = visualTransformation,
+            singleLine = singleLine,
         )
         AnimatedVisibility(visible = isError) {
             ErrorText(errorMessage = errorMessage)

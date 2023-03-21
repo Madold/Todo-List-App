@@ -65,6 +65,8 @@ dependencies {
     def accompanist_permissions_version = "0.29.1-alpha"
     def work_manager_version = "2.8.0"
     def mockk_version = "1.12.2"
+    def logger_version = "2.2.0"
+    def coil_compose_version = "2.2.2"
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.0'
@@ -111,7 +113,6 @@ dependencies {
     testImplementation "io.mockk:mockk:$mockk_version"
 
     // Firebase SDKs
-
     // Firebase BOM
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
     // Firebase Analytics
@@ -122,11 +123,21 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging-ktx'
     // Firebase auth
     implementation 'com.google.firebase:firebase-auth-ktx'
+    //Firebase firestore
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    // gms auth
+    implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
     // Accompanist pager
     implementation "com.google.accompanist:accompanist-pager:$accompanist_pager_version"
     // Accompanist pager indicators
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_pager_version"
+
+    // Logger
+    implementation "com.orhanobut:logger:$logger_version"
+
+    // Coil compose
+    implementation("io.coil-kt:coil-compose:$coil_compose_version")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

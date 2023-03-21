@@ -1,30 +1,29 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
 package com.markusw.app.ui.view.screens.main.composables
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.markusw.app.ui.theme.spacing
 import com.markusw.app.ui.view.screens.main.DrawerDestination
-import kotlinx.coroutines.launch
+import com.markusw.app.ui.viewmodel.MainViewModel
 
 @Composable
 fun NavigationDrawer(
     drawerState: DrawerState,
     navController: NavController,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
+    viewModel: MainViewModel = hiltViewModel()
 ) {
 
-
-    val coroutineScope = rememberCoroutineScope()
     val drawerDestinations = listOf(
         DrawerDestination.SettingsScreen
     )
@@ -35,41 +34,22 @@ fun NavigationDrawer(
         drawerContent = {
             ModalDrawerSheet(
                 drawerShape = RoundedCornerShape(
-                    topEnd = 8.dp,
-                    bottomEnd = 8.dp
+                    topEnd = MaterialTheme.spacing.small,
+                    bottomEnd = MaterialTheme.spacing.small
                 )
             ) {
-                Spacer(modifier = Modifier.height(16.dp))
-                drawerDestinations.forEach { destination ->
-                    NavigationDrawerItem(
-                        label = {
-                            Text(
-                                text = destination.label.asString(),
-                                style = TextStyle(
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            )
-                        },
-                        icon = {
-                            Icon(
-                                painter = painterResource(id = destination.icon),
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onBackground
-                            )
-                        },
-                        selected = false,
-                        onClick = {
-                            navController.navigate(destination.route)
-                            coroutineScope.launch {
-                                drawerState.close()
-                            }
-                        },
-                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
-                        colors = NavigationDrawerItemDefaults.colors(
-                            selectedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        ),
-                        shape = RoundedCornerShape(8.dp)
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = MaterialTheme.spacing.medium),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    MainDrawerHeader(
+                        drawerDestinations = drawerDestinations,
+                        navController = navController,
+                        drawerState = drawerState
                     )
+                    MainDrawerFooter(onSignOutBtnClick = viewModel::onSignOut)
                 }
             }
         },

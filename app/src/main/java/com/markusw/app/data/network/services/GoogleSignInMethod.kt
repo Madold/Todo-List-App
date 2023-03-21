@@ -1,11 +1,15 @@
 package com.markusw.app.data.network.services
 
 import com.google.firebase.auth.AuthCredential
+import com.markusw.app.core.FirebaseClient
 import com.markusw.app.domain.AuthenticationResult
 import com.markusw.app.domain.model.User
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class GoogleSignInMethod @Inject constructor(): SignInMethod() {
+class GoogleSignInMethod @Inject constructor(
+    private val firebaseClient: FirebaseClient
+): AuthService {
 
     override suspend fun authenticate(user: User): AuthenticationResult {
         return try {
@@ -22,7 +26,7 @@ class GoogleSignInMethod @Inject constructor(): SignInMethod() {
                     result = AuthenticationResult(
                         success = true,
                     )
-                }
+                }.await()
             result!!
         } catch (e: Exception) {
             AuthenticationResult(

@@ -1,8 +1,8 @@
-package com.markusw.app.ui.view.screens.presentation
+package com.markusw.app.ui.view.screens.main
 
 import com.markusw.app.ui.view.UiText
 
-data class PresentationState(
+data class MainScreenState(
     val email: String = "",
     val emailError: UiText? = null,
     val password: String = "",

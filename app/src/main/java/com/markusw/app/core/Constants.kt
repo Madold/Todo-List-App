@@ -1,5 +1,7 @@
 package com.markusw.app.core
 
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+
 object Constants {
     const val TODOS_TABLE = "todos_table"
     const val TODO_NOTIFICATION_CHANNEL_ID = "todo_notification_channel_id"

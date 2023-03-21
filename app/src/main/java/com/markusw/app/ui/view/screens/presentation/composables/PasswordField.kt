@@ -14,17 +14,19 @@ fun PasswordField(
     label: @Composable () -> Unit = {},
     onDone: () -> Unit = {},
     trailingIcon: @Composable () -> Unit = {},
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    singleLine: Boolean = true,
 ) {
     BaseField(
         value = value,
+        modifier = modifier,
         onValueChange = onValueChange,
         isError = isError,
-        modifier = modifier,
         errorMessage = errorMessage,
         label = label,
         onDone = onDone,
         trailingIcon = trailingIcon,
-        visualTransformation = visualTransformation
+        visualTransformation = visualTransformation,
+        singleLine = singleLine
     )
 }

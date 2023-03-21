@@ -1,10 +1,13 @@
 package com.markusw.app.data.network.services
 
+import com.markusw.app.core.FirebaseClient
 import com.markusw.app.domain.AuthenticationResult
 import com.markusw.app.domain.model.User
 import javax.inject.Inject
 
-class FirebaseSignInMethod @Inject constructor(): SignInMethod() {
+class FirebaseSignInMethod @Inject constructor(
+    private val firebaseClient: FirebaseClient
+): AuthService {
 
     override suspend fun authenticate(user: User): AuthenticationResult {
         return try {
